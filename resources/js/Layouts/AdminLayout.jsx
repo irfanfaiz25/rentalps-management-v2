@@ -6,6 +6,7 @@ import { GiConsoleController } from "react-icons/gi";
 import { TbReport } from "react-icons/tb";
 import { Link } from "@inertiajs/react";
 import Header from "@/Components/Header";
+import toast, { Toaster } from "react-hot-toast";
 
 const AdminLayout = ({ children }) => {
     const [open, setOpen] = useState(true);
@@ -39,7 +40,7 @@ const AdminLayout = ({ children }) => {
         },
     ];
     useEffect(() => {
-        const mediaQuery = window.matchMedia("(max-width: 768px)");
+        const mediaQuery = window.matchMedia("(max-width: 896px)");
         if (mediaQuery.matches) {
             setOpen(false);
         }
@@ -67,21 +68,24 @@ const AdminLayout = ({ children }) => {
 
     return (
         <div className="relative">
+            <Toaster />
             <Header />
             <div className="flex gap-6 pt-16">
                 <div
                     className={`bg-[#FAFAFA] dark:bg-[#1c1c1c] fixed top-0 left-0 min-h-screen ${
                         open ? "w-72" : "w-16"
-                    } duration-500 text-gray-100 px-3 z-10 pt-20`}
+                    } duration-500 text-gray-100 px-3 z-40 pt-20 lg:pt-10`}
                 >
-                    <div className="py-3 flex justify-end mr-3">
-                        <HiMenuAlt3
-                            size={26}
-                            className="cursor-pointer text-gray-800 dark:text-gray-50"
-                            onClick={() => setOpen(!open)}
-                        />
-                    </div>
-                    <div className="mt-10 flex flex-col gap-4 relative text-gray-800 dark:text-gray-50">
+                    {window.innerWidth < 1024 && (
+                        <div className="py-3 flex justify-end mr-3">
+                            <HiMenuAlt3
+                                size={26}
+                                className="cursor-pointer text-gray-800 dark:text-gray-50"
+                                onClick={() => setOpen(!open)}
+                            />
+                        </div>
+                    )}
+                    <div className="lg:mt-10 flex flex-col gap-4 relative text-gray-800 dark:text-gray-50">
                         {menus?.map((menu, i) => (
                             <Link
                                 to={menu?.link}
@@ -121,25 +125,29 @@ const AdminLayout = ({ children }) => {
                     </div>
                 </div>
                 <div
-                    className={`flex-1 p-3 text-xl bg-[#FAFAFA] dark:bg-[#1c1c1c] text-gray-900 dark:text-gray-50 font-semibold overflow-auto ${
+                    className={`flex-1 p-3 text-xl bg-[#FAFAFA] dark:bg-[#1c1c1c] text-gray-900 dark:text-gray-50 font-semibold overflow-auto relative min-h-screen duration-500 ${
                         open && window.innerWidth < 1024
                             ? "bg-black/70 dark:bg-gray-500/70"
                             : ""
-                    } ${
-                        open ? "ml-16 lg:ml-72" : "ml-16"
-                    } duration-500 sm:pl-7 pt-5`}
+                    } ${open ? "ml-16 lg:ml-72" : "ml-16"}`}
                     onClick={
                         open && window.innerWidth < 1024
                             ? () => setOpen(!open)
                             : () => {}
                     }
                 >
-                    <div className="flex justify-start">
-                        <div className="w-full bg-white drop-shadow-md py-6 px-4 rounded-md">
-                            <h1 className="text-4xl font-extra-bold text-gray-800 capitalize">
+                    {open && window.innerWidth < 1024 && (
+                        <div
+                            className="fixed inset-0 z-30 bg-black/70 dark:bg-gray-500/70"
+                            onClick={() => setOpen(!open)}
+                        ></div>
+                    )}
+                    <div className="flex justify-start z-50 mt-2">
+                        <div className="w-full bg-white dark:bg-[#252525] drop-shadow-sm py-5 px-4 rounded-md border-2 border-gray-200/80 dark:border-[#2d2d2d]">
+                            <h1 className="text-4xl font-extra-bold text-gray-800 dark:text-gray-50 capitalize">
                                 {activePathName}
                             </h1>
-                            <h1 className="text-base font-medium text-gray-800 ">
+                            <h1 className="text-base pt-1 font-medium text-gray-800 dark:text-gray-50">
                                 Rental PS Management
                             </h1>
                         </div>

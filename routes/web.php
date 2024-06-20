@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConsoleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -22,9 +23,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/consoles', function () {
-        return Inertia::render('Consoles');
-    });
+
+    Route::get('/consoles', [ConsoleController::class, 'index'])->name('console.index');
+    Route::post('/console', [ConsoleController::class, 'store'])->name('console.store');
+    Route::patch('/console/{console}', [ConsoleController::class, 'update'])->name('console.update');
+    Route::delete('/console/{console}/delete', [ConsoleController::class, 'destroy'])->name('console.destroy');
 });
 
 require __DIR__ . '/auth.php';

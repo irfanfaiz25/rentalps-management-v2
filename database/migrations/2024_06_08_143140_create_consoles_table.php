@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('consoles', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 50);
+            $table->string('model', 50);
+            $table->decimal('price', 10, 2);
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }
